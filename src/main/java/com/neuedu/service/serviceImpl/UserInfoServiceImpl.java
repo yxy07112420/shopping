@@ -10,6 +10,8 @@ import com.neuedu.utils.TokenCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -47,7 +49,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         /**
          * 返回结果
          */
-        userInfo.setPassword("");
+//        userInfo.setPassword("");
+        //保存用户信息
+
         return ServerResponse.responseIsSuccess(null,userInfo);
     }
 
@@ -232,5 +236,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo selectUserInfoByUserId(Integer userId) {
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         return userInfo;
+    }
+
+    @Override
+    public ServerResponse selectUserInfoByToken(String token) {
+        UserInfo userInfo = userInfoMapper.selectUserInfoByToken(token);
+        System.out.println(userInfo);
+        if(userInfo == null){
+            return ServerResponse.responseIsError("登录信息错误，请重新登录");
+        }
+        return ServerResponse.responseIsSuccess(null,userInfo);
     }
 }

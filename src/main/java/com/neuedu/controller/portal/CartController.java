@@ -15,11 +15,10 @@ import javax.servlet.http.HttpSession;
  * 购物车控制层
  */
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/portal/cart")
 public class CartController {
     @Autowired
     CartService cartService;
-
     /**
      * 添加购物车
      * @param session
@@ -30,13 +29,7 @@ public class CartController {
     @RequestMapping(value = "/add.do")
     public ServerResponse add(HttpSession session,Integer productId,Integer count){
         //验证是否有用户登录
-
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
-
-
         return cartService.add(userInfo.getId(),productId,count);
 
     }
@@ -49,9 +42,6 @@ public class CartController {
     public ServerResponse list(HttpSession session){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.list(userInfo.getId());
     }
 
@@ -64,9 +54,6 @@ public class CartController {
     public ServerResponse update(HttpSession session,Integer productId,Integer count){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.update(userInfo.getId(),productId,count);
     }
     /**
@@ -78,9 +65,6 @@ public class CartController {
     public ServerResponse update_cart(HttpSession session,String productIds){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.update_cart(userInfo.getId(),productIds);
     }
 
@@ -93,9 +77,6 @@ public class CartController {
     public ServerResponse select(HttpSession session,Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.select(userInfo.getId(),productId, ResponseCord.CartProductEnum.PRODUCT_ISCHECKED.getCode());
     }
     /**
@@ -107,9 +88,6 @@ public class CartController {
     public ServerResponse un_select(HttpSession session,Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.select(userInfo.getId(),productId, ResponseCord.CartProductEnum.PRODUCT_NOCHECKED.getCode());
     }
     /**
@@ -121,9 +99,6 @@ public class CartController {
     public ServerResponse selectAll(HttpSession session,Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.select(userInfo.getId(),null, ResponseCord.CartProductEnum.PRODUCT_ISCHECKED.getCode());
     }
     /**
@@ -135,9 +110,6 @@ public class CartController {
     public ServerResponse un_selectAll(HttpSession session,Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.select(userInfo.getId(),null, ResponseCord.CartProductEnum.PRODUCT_NOCHECKED.getCode());
     }
     /**
@@ -147,9 +119,6 @@ public class CartController {
     public ServerResponse select_cart_product_count(HttpSession session){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return cartService.select_cart_product_count(userInfo.getId());
     }
 

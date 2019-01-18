@@ -16,9 +16,8 @@ import javax.servlet.http.HttpSession;
  * 地址模块
  */
 @RestController
-@RequestMapping(value="/address")
+@RequestMapping(value="/portal/address")
 public class AddressController {
-
     @Autowired
     AddressService addressService;
     /**
@@ -28,11 +27,7 @@ public class AddressController {
      */
     @RequestMapping(value = "/add.do")
     public ServerResponse add(HttpSession session, Shipping shipping){
-
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录或登录已失效");
-        }
         return addressService.add(userInfo.getId(),shipping);
     }
     /**
@@ -40,11 +35,7 @@ public class AddressController {
      */
     @RequestMapping(value = "/del.do")
     public ServerResponse del(HttpSession session, Integer shippingId){
-
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录或登录已失效");
-        }
         return addressService.del(userInfo.getId(),shippingId);
     }
     /**
@@ -52,11 +43,7 @@ public class AddressController {
      */
     @RequestMapping(value = "/update.do")
     public ServerResponse update(HttpSession session, Shipping shipping){
-
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录或登录已失效");
-        }
         shipping.setUserId(userInfo.getId());
         return addressService.update(shipping);
     }
@@ -65,11 +52,7 @@ public class AddressController {
      */
     @RequestMapping(value = "/select.do")
     public ServerResponse select(HttpSession session, Integer shippingId){
-
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录或登录已失效");
-        }
         return addressService.select(userInfo.getId(),shippingId);
     }
     /**
@@ -79,11 +62,7 @@ public class AddressController {
     public ServerResponse list(HttpSession session,
                                  @RequestParam(required = false,defaultValue = "1") Integer pageNum,
                                  @RequestParam(required = false,defaultValue = "10") Integer pageSize){
-
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录或登录已失效");
-        }
         return addressService.list(userInfo.getId(),pageNum,pageSize);
     }
 }

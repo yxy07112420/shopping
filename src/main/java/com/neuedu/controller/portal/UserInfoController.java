@@ -3,30 +3,48 @@ package com.neuedu.controller.portal;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import com.neuedu.common.ResponseCord;
 import com.neuedu.common.ServerResponse;
+import com.neuedu.dao.UserInfoMapper;
 import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.UserInfoService;
+import com.neuedu.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
  * user用户的控制层
  */
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/portal/user")
 public class UserInfoController {
 
     @Autowired
     UserInfoService userInfoService;
+    @Autowired
+    UserInfoMapper userInfoMapper;
     //登录
     @RequestMapping(value = "/login.do")
-    public ServerResponse isLoginSuccess(HttpSession session,String username, String password){
+    public ServerResponse isLoginSuccess(HttpSession session, HttpServletResponse response,String username, String password){
         ServerResponse loginSuccess = userInfoService.isLoginSuccess(username, password);
         if(loginSuccess.isSuccess()){//登录成功
             UserInfo userInfo = (UserInfo) loginSuccess.getDate();
-            //保存用户信息
+            String token =  MD5Utils.getMD5Code(userInfo.getUsername()+userInfo.getPassword());
+            Cookie cookie = new Cookie("userInfo",token);
+            cookie.setMaxAge(1800);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            //将token保存
+            userInfo.setToken(token);
+            int i = userInfoMapper.updateUserInfo(userInfo);
+            if(i == 0){
+                return ServerResponse.responseIsError("更新失败，登录错误");
+            }
+            userInfo.setPassword("");
             session.setAttribute(ResponseCord.CURRENTUSER,userInfo);
         }
         return loginSuccess;
@@ -65,9 +83,6 @@ public class UserInfoController {
     @RequestMapping(value = "/get_user_info.do")
     public ServerResponse get_user_info(HttpSession session){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
         UserInfo userInfo1 = userInfo;
         userInfo1.setPassword("");
         userInfo1.setAnswer("");
@@ -79,18 +94,12 @@ public class UserInfoController {
     @RequestMapping(value = "/reset_password.do")
     public ServerResponse reset_password(HttpSession session, String passwordOld,String passwordNew){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
         return userInfoService.reset_password(userInfo.getUsername(),passwordOld,passwordNew);
     }
     //更新个人信息
     @RequestMapping(value = "/update_user_info.do")
     public ServerResponse update_user_info(HttpSession session, UserInfo user){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
         user.setId(userInfo.getId());
         ServerResponse serverResponse = userInfoService.update_user_info(user);
         if(serverResponse.isSuccess()){
@@ -105,9 +114,6 @@ public class UserInfoController {
     @RequestMapping(value = "/get_user_allInfos.do")
     public ServerResponse get_user_allInfos(HttpSession session){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
         UserInfo userInfo1 = userInfo;
         userInfo1.setPassword("");
         return ServerResponse.responseIsSuccess(null,userInfo1);

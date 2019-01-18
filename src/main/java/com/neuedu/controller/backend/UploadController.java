@@ -23,7 +23,6 @@ public class UploadController {
      */
     @RequestMapping(value = "/upload.do",method = RequestMethod.GET)
     public String upload(){
-
         return "upload";
     }
     @RequestMapping(value = "/upload.do",method = RequestMethod.POST)

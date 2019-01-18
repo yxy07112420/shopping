@@ -25,14 +25,14 @@ public class ProductManageInfoController {
     @RequestMapping(value = "/updateOrInsertProduct.do")
     public ServerResponse updateOrInsertProduct(HttpSession session, Product product){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         return productService.updateOrInsertProduct(product);
     }
     /**
@@ -41,14 +41,14 @@ public class ProductManageInfoController {
     @RequestMapping(value = "/set_product_status.do")
     public ServerResponse set_product_status(HttpSession session,Integer productId,Integer status){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         return productService.set_product_status(productId,status);
     }
     /**
@@ -57,14 +57,14 @@ public class ProductManageInfoController {
     @RequestMapping(value = "/detail.do")
     public ServerResponse detail(HttpSession session,Integer productId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         return productService.detail(productId);
     }
     /**
@@ -73,14 +73,14 @@ public class ProductManageInfoController {
     @RequestMapping(value = "/list.do")
     public ServerResponse list(HttpSession session, @RequestParam(required = false,defaultValue = "1")Integer pageNum,@RequestParam(required = false,defaultValue = "10")Integer pageSize){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         return productService.list(pageNum,pageSize);
     }
     /**
@@ -93,14 +93,14 @@ public class ProductManageInfoController {
                                  @RequestParam(required = false,defaultValue = "1")Integer pageNum,
                                  @RequestParam(required = false,defaultValue = "10")Integer pageSize){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         return productService.search(productId,productName,pageNum,pageSize);
     }
 }

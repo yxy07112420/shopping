@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * user用户的业务层
  */
-@Service
+
 public interface UserInfoService {
 
     //根据用户名和密码验证用户登录
@@ -29,4 +29,7 @@ public interface UserInfoService {
     ServerResponse update_user_info(UserInfo user);
     //根据哦用户id查询用户信息
     UserInfo selectUserInfoByUserId(Integer userId);
+    //根据token查询用户信息
+    ServerResponse selectUserInfoByToken(String token);
+
 }

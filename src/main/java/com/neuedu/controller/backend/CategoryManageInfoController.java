@@ -6,6 +6,7 @@ import com.neuedu.common.ServerResponse;
 import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,54 +26,56 @@ public class CategoryManageInfoController {
     /**
      * 查询某一类别的子类别（同级，不含有后代）
      */
-    @RequestMapping(value = "/get_category.do")
-    public ServerResponse get_category(HttpSession session,Integer categoryId){
+//    @RequestMapping(value = "/get_category.do")
+    @RequestMapping(value = "/get_category.do/{categoryId}")
+    public ServerResponse get_category(HttpSession session,@PathVariable("categoryId") Integer categoryId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         //查询子节点
         ServerResponse category = categoryService.get_category(categoryId);
         return category;
     }
-
     /**
      * 增加节点
      */
     @RequestMapping(value = "/add_category.do")
+//    @RequestMapping(value = "/add_category.do/parentId/{parentId}/categoryName/{categoryName}")
     public ServerResponse add_category(HttpSession session, @RequestParam(required = false,defaultValue = "0") Integer parentId, String categoryName){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         //添加节点
         ServerResponse category = categoryService.add_category(parentId,categoryName);
         return category;
     }
     /**
      * 修改节点
+     * /set_category_name.do/categoryId/{categoryId}/categoryName/{categoryName}
      */
     @RequestMapping(value = "/set_category_name.do")
     public ServerResponse set_category_name(HttpSession session,Integer categoryId, String categoryName){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         //修改节点信息
         ServerResponse category = categoryService.set_category_name(categoryId,categoryName);
         return category;
@@ -83,14 +86,14 @@ public class CategoryManageInfoController {
     @RequestMapping(value = "/get_deep_category.do")
     public ServerResponse get_deep_category(HttpSession session,Integer categoryId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        //验证用户是否登录
-        if(userInfo == null){
-            return ServerResponse.responseIsError("用户未登录");
-        }
-        //验证用户权限是否为管理员用户
-        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
-            return ServerResponse.responseIsError("登录用户权限错误");
-        }
+//        //验证用户是否登录
+//        if(userInfo == null){
+//            return ServerResponse.responseIsError("用户未登录");
+//        }
+//        //验证用户权限是否为管理员用户
+//        if(userInfo.getRole() != ResponseCord.UserEnum.USER_ADMIN.getCode()){
+//            return ServerResponse.responseIsError("登录用户权限错误");
+//        }
         //修改节点信息
         ServerResponse category = categoryService.get_deep_category(categoryId);
         return category;

@@ -78,6 +78,9 @@
        <if test="role!=null">
          role = #{role,jdbcType=INTEGER},
        </if>
+       <if test="token!=null">
+         token = #{token,jdbcType=INTEGER},
+       </if>
        update_time = now()
      </set>
     where id = #{id,jdbcType=INTEGER}
@@ -131,6 +134,12 @@
 
   <select id="forget_check_question" parameterType="map" resultType="int">
     select count(*) from neuedu_user where username=#{username} and question=#{question} and answer=#{answer}
+  </select>
+  <select id="selectUserInfoByToken" parameterType="string" resultMap="BaseResultMap">
+    select id, username, password, email, phone, question, answer, role, create_time,
+    update_time, ip,token
+    from neuedu_user
+    where token=#{token}
   </select>
 
 

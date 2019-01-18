@@ -69,4 +69,6 @@ public interface UserInfoMapper {
     int updateUserPasswordByUsername(@Param("username") String username,@Param("newPassword") String newPassword);
    //更新用户个人信息
     int updateUserInfo(UserInfo userInfo);
+    //根据token查询用户信息
+    UserInfo selectUserInfoByToken(String token);
 }

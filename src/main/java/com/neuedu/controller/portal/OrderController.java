@@ -24,7 +24,7 @@ import java.util.Set;
  *订单模块
  */
 @RestController
-@RequestMapping(value = "/order")
+@RequestMapping(value = "/portal/order")
 public class OrderController {
     @Autowired
     OrderService orderService;
@@ -34,9 +34,6 @@ public class OrderController {
     @RequestMapping(value = "/create.do")
     public ServerResponse create(HttpSession session,Integer shippingId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("请登录");
-        }
         return orderService.create(userInfo.getId(),shippingId);
     }
     /**
@@ -45,9 +42,6 @@ public class OrderController {
     @RequestMapping(value = "/cancel.do")
     public ServerResponse cancel(HttpSession session,Long orderNo){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("请登录");
-        }
         return orderService.cancel(userInfo.getId(),orderNo);
     }
     /**
@@ -56,9 +50,6 @@ public class OrderController {
     @RequestMapping(value = "/get_order_cart_product.do")
     public ServerResponse get_order_cart_product(HttpSession session){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("请登录");
-        }
         return orderService.get_order_cart_product(userInfo.getId());
     }
     /**
@@ -69,9 +60,6 @@ public class OrderController {
                                @RequestParam(required = false,defaultValue = "1")Integer pageNum,
                                @RequestParam(required = false,defaultValue = "10")Integer pageSize){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("请登录");
-        }
         return orderService.list(userInfo.getId(),pageNum,pageSize);
     }
     /**
@@ -80,9 +68,6 @@ public class OrderController {
     @RequestMapping(value = "/detail.do")
     public ServerResponse detail(HttpSession session,Long orderNo){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("请登录");
-        }
         return orderService.detail(userInfo.getId(),orderNo);
     }
     /**
@@ -92,9 +77,6 @@ public class OrderController {
     public ServerResponse pay(HttpSession session,Long orderNo){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return orderService.pay(userInfo.getId(),orderNo);
     }
     /**
@@ -138,9 +120,6 @@ public class OrderController {
     public ServerResponse query_order_pay_status(HttpSession session,Long orderNo){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-        if(userInfo == null){
-            return ServerResponse.responseIsError("当前无用户登录或用户登录已超时");
-        }
         return orderService.query_order_pay_status(orderNo);
     }
 }

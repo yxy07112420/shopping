@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 前台_商品
  */
 @RestController
-@RequestMapping(value = "/product")
+@RequestMapping(value = "/portal/product")
 public class ProductController {
     @Autowired
     ProductService productService;
