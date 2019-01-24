@@ -4,6 +4,7 @@ import com.neuedu.common.ResponseCord;
 import com.neuedu.common.ServerResponse;
 import com.neuedu.dao.UserInfoMapper;
 import com.neuedu.pojo.UserInfo;
+import com.neuedu.redis.RedisApi;
 import com.neuedu.service.UserInfoService;
 import com.neuedu.utils.MD5Utils;
 import com.neuedu.utils.TokenCache;
@@ -19,6 +20,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     UserInfoMapper userInfoMapper;
+    @Autowired
+    RedisApi redisApi;
 
     @Override
     public ServerResponse isLoginSuccess(String username, String password) {
@@ -51,7 +54,7 @@ public class UserInfoServiceImpl implements UserInfoService {
          */
 //        userInfo.setPassword("");
         //保存用户信息
-
+//        System.out.println(10/0);
         return ServerResponse.responseIsSuccess(null,userInfo);
     }
 
@@ -123,10 +126,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         //在服务端产生一个token，并将token返回给客户端
         String token = UUID.randomUUID().toString();
-        TokenCache.set(username,token);
+        redisApi.setex(username,300,token);
+//        TokenCache.set(username,token);
         return ServerResponse.responseIsSuccess("",token);
     }
-
     @Override
     public ServerResponse forget_checkUser_password(String username, String newPassword, String token) {
         //校验参数
@@ -140,7 +143,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             return ServerResponse.responseIsError("答案不能为空，请重新输入");
         }
         //判读用户是否横向越权校验
-        String forgenToken = TokenCache.get(username);
+//        String forgenToken = TokenCache.get(username);
+        String forgenToken = redisApi.get(username);
         if(forgenToken == null){
             return ServerResponse.responseIsError("token已失效");
         }

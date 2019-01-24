@@ -10,7 +10,7 @@ import java.util.Date;
  * date与String类型的转换
  */
 public class DateChangeUtils {
-    private static final String STANDARD_FORMAT="yyyy-MM-dd HH:mm:ss";
+    public static final String STANDARD_FORMAT="yyyy-MM-dd HH:mm:ss";
 
     /**
      * 时间转为string类型

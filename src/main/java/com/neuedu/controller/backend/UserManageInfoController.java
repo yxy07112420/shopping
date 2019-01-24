@@ -7,6 +7,7 @@ import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.UserInfoService;
 import com.neuedu.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,11 +27,13 @@ public class UserManageInfoController {
      @Autowired
     UserInfoMapper userInfoMapper;
     //登录
-    @RequestMapping(value = "/login.do")
-    public ServerResponse isLoginSuccess(HttpSession session, HttpServletResponse response, String username, String password){
+    @RequestMapping(value = "/login.do/{username}/{password}")
+    public ServerResponse isLoginSuccess(HttpSession session, HttpServletResponse response,
+                                         @PathVariable("username") String username,
+                                         @PathVariable("password") String password){
         ServerResponse loginSuccess = userInfoService.isLoginSuccess(username, password);
         if(loginSuccess.isSuccess()){//登录成功
-            UserInfo userInfo = (UserInfo) loginSuccess.getDate();
+            UserInfo userInfo = (UserInfo) loginSuccess.getData();
             String token =  MD5Utils.getMD5Code(userInfo.getUsername()+userInfo.getPassword());
             Cookie cookie = new Cookie("userInfo",token);
             cookie.setMaxAge(1800);

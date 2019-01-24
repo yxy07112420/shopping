@@ -3,6 +3,7 @@ package com.neuedu.dao;
 import com.neuedu.pojo.Order;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.aspectj.lang.annotation.Pointcut;
 
 import java.util.List;
 @Mapper
@@ -56,4 +57,8 @@ public interface OrderMapper {
      * 根据orderNo查询订单
      */
     Order selectOrderByOrderNo(Long orderNo);
+    /**
+     * 根据关闭订单时间查询订单
+     */
+    List<Order> selectOrderByCloseTime(@Param("closeTime") String closeTime, @Param("status") Integer status);
 }

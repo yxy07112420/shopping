@@ -65,4 +65,8 @@ public interface OrderService {
      * @return
      */
     ServerResponse query_order_pay_status(Long orderNo);
+    /**
+     * 订单失效，关闭订单
+     */
+    void closeOrder(String closeTime);
 }

@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
             return orderItemLists;
         }
         //创建订单order并保存到数据库中
-        List<OrderItem> orderItemList = (List<OrderItem> ) orderItemLists.getDate();
+        List<OrderItem> orderItemList = (List<OrderItem> ) orderItemLists.getData();
         if(orderItemList == null || orderItemList.size() == 0){
             return ServerResponse.responseIsError("购物车为空");
         }
@@ -162,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
             return orderItemLists;
         }
         //将orderItem---->cartOrderItemVO
-        List<OrderItem> orderItemList = (List<OrderItem>) orderItemLists.getDate();
+        List<OrderItem> orderItemList = (List<OrderItem>) orderItemLists.getData();
         if(orderItemList == null || orderItemList.size() == 0){
             return ServerResponse.responseIsError("购物陈空");
         }
@@ -523,6 +523,35 @@ public class OrderServiceImpl implements OrderService {
             return ServerResponse.responseIsSuccess(null,true);
         }
         return ServerResponse.responseIsError("false");
+    }
+
+    @Override
+    public void closeOrder(String closeTime) {
+        //查询失效订单
+        List<Order> orders = orderMapper.selectOrderByCloseTime(closeTime, ResponseCord.OrderPayEnum.ORDER_NOPAY.getCode());
+        if(orders != null&&orders.size()>0){
+            //查询订单明细
+            for (Order order:orders) {
+                List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderNo(order.getOrderNo());
+                if(orderItemList!=null&&orderItemList.size()>0){
+                    //遍历订单明细，查询库存信息
+                    for (OrderItem orderItem:orderItemList) {
+                        Product product = productMapper.selectByPrimaryKey(orderItem.getProductId());
+                        if(product==null){
+                            continue;
+                        }
+                        //更新库存
+                        product.setStock(product.getStock()+orderItem.getQuantity());
+                        productMapper.updateByPrimaryKey(product);
+
+                    }
+                }
+                //关闭订单
+                order.setStatus(ResponseCord.OrderPayEnum.ORDER_CANCEL.getCode());
+                order.setCloseTime(new Date());
+                orderMapper.updateByPrimaryKey(order);
+            }
+        }
     }
 
     ////////////////////////////////////////////////支付接口////////////////////////////////////////////////////////////

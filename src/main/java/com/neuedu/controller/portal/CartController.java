@@ -5,6 +5,7 @@ import com.neuedu.common.ServerResponse;
 import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +27,10 @@ public class CartController {
      * @param count
      * @return
      */
-    @RequestMapping(value = "/add.do")
-    public ServerResponse add(HttpSession session,Integer productId,Integer count){
+    @RequestMapping(value = "/add.do/{productId}/{count}")
+    public ServerResponse add(HttpSession session,
+                              @PathVariable("productId") Integer productId,
+                              @PathVariable("count") Integer count){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return cartService.add(userInfo.getId(),productId,count);
@@ -50,8 +53,10 @@ public class CartController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/update.do")
-    public ServerResponse update(HttpSession session,Integer productId,Integer count){
+    @RequestMapping(value = "/update.do/{productId}/{count}")
+    public ServerResponse update(HttpSession session,
+                                 @PathVariable("productId") Integer productId,
+                                 @PathVariable("count") Integer count){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return cartService.update(userInfo.getId(),productId,count);
@@ -61,8 +66,8 @@ public class CartController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/update_cart.do")
-    public ServerResponse update_cart(HttpSession session,String productIds){
+    @RequestMapping(value = "/update_cart.do/{productIds}")
+    public ServerResponse update_cart(HttpSession session,@PathVariable("productIds") String productIds){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return cartService.update_cart(userInfo.getId(),productIds);
@@ -73,8 +78,8 @@ public class CartController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/select.do")
-    public ServerResponse select(HttpSession session,Integer productId){
+    @RequestMapping(value = "/select.do/{productId}")
+    public ServerResponse select(HttpSession session,@PathVariable("productId") Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return cartService.select(userInfo.getId(),productId, ResponseCord.CartProductEnum.PRODUCT_ISCHECKED.getCode());
@@ -84,8 +89,8 @@ public class CartController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/un_select.do")
-    public ServerResponse un_select(HttpSession session,Integer productId){
+    @RequestMapping(value = "/un_select.do/{productId}")
+    public ServerResponse un_select(HttpSession session,@PathVariable("productId") Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return cartService.select(userInfo.getId(),productId, ResponseCord.CartProductEnum.PRODUCT_NOCHECKED.getCode());
@@ -95,8 +100,8 @@ public class CartController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/selectAll.do")
-    public ServerResponse selectAll(HttpSession session,Integer productId){
+    @RequestMapping(value = "/selectAll.do/{productId}")
+    public ServerResponse selectAll(HttpSession session,@PathVariable("productId") Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return cartService.select(userInfo.getId(),null, ResponseCord.CartProductEnum.PRODUCT_ISCHECKED.getCode());
@@ -106,8 +111,8 @@ public class CartController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/un_selectAll.do")
-    public ServerResponse un_selectAll(HttpSession session,Integer productId){
+    @RequestMapping(value = "/un_selectAll.do/{productId}")
+    public ServerResponse un_selectAll(HttpSession session,@PathVariable("productId") Integer productId){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return cartService.select(userInfo.getId(),null, ResponseCord.CartProductEnum.PRODUCT_NOCHECKED.getCode());

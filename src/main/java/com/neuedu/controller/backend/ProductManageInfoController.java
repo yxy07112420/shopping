@@ -6,6 +6,7 @@ import com.neuedu.pojo.Product;
 import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,8 +39,10 @@ public class ProductManageInfoController {
     /**
      * 商品上下架接口
      */
-    @RequestMapping(value = "/set_product_status.do")
-    public ServerResponse set_product_status(HttpSession session,Integer productId,Integer status){
+    @RequestMapping(value = "/set_product_status.do/{productId}/{status}")
+    public ServerResponse set_product_status(HttpSession session,
+                                             @PathVariable("productId") Integer productId,
+                                             @PathVariable("status") Integer status){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
 //        //验证用户是否登录
 //        if(userInfo == null){
@@ -54,9 +57,10 @@ public class ProductManageInfoController {
     /**
      * 查看商品的详情（根据商品id）
      */
-    @RequestMapping(value = "/detail.do")
-    public ServerResponse detail(HttpSession session,Integer productId){
+    @RequestMapping(value = "/detail.do/{productId}")
+    public ServerResponse detail(HttpSession session,@PathVariable("productId") Integer productId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
+
 //        //验证用户是否登录
 //        if(userInfo == null){
 //            return ServerResponse.responseIsError("用户未登录");
@@ -70,8 +74,12 @@ public class ProductManageInfoController {
     /**
      * 分页查询商品信息
      */
-    @RequestMapping(value = "/list.do")
-    public ServerResponse list(HttpSession session, @RequestParam(required = false,defaultValue = "1")Integer pageNum,@RequestParam(required = false,defaultValue = "10")Integer pageSize){
+    // @RequestParam(required = false,defaultValue = "1")Integer pageNum,
+    //  @RequestParam(required = false,defaultValue = "10")Integer pageSize
+    @RequestMapping(value = "/list.do/{pageNum}/{pageSize}")
+    public ServerResponse list(HttpSession session,
+                               @PathVariable("pageNum") Integer pageNum,
+                               @PathVariable("pageSize") Integer pageSize){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
 //        //验证用户是否登录
 //        if(userInfo == null){

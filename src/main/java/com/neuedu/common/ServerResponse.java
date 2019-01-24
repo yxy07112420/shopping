@@ -14,7 +14,7 @@ public class ServerResponse<T> {
     //状态码0---->成功
     private Integer status;
     //status=0时
-    private T date;
+    private T data;
     //提示信息
     private String msg;
 
@@ -30,10 +30,10 @@ public class ServerResponse<T> {
         this.msg = msg;
     }
     //含有状态码,提示信息和date的构造方法
-    private ServerResponse(Integer status,String msg,T date){
+    private ServerResponse(Integer status,String msg,T data){
         this.status = status;
         this.msg = msg;
-        this.date = date;
+        this.data = data;
     }
     //判断接口是否访问成功
     @JsonIgnore
@@ -77,12 +77,12 @@ public class ServerResponse<T> {
         this.status = status;
     }
 
-    public T getDate() {
-        return date;
+    public T getData() {
+        return data;
     }
 
-    public void setDate(T date) {
-        this.date = date;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public String getMsg() {

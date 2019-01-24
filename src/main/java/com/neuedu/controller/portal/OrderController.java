@@ -10,6 +10,7 @@ import com.neuedu.pojo.UserInfo;
 import com.neuedu.service.OrderService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,16 +32,16 @@ public class OrderController {
     /**
      * 创建订单
      */
-    @RequestMapping(value = "/create.do")
-    public ServerResponse create(HttpSession session,Integer shippingId){
+    @RequestMapping(value = "/create.do/{shippingId}")
+    public ServerResponse create(HttpSession session,@PathVariable("shippingId") Integer shippingId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return orderService.create(userInfo.getId(),shippingId);
     }
     /**
      * 取消订单
      */
-    @RequestMapping(value = "/cancel.do")
-    public ServerResponse cancel(HttpSession session,Long orderNo){
+    @RequestMapping(value = "/cancel.do/{orderNo}")
+    public ServerResponse cancel(HttpSession session,@PathVariable("orderNo") Long orderNo){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return orderService.cancel(userInfo.getId(),orderNo);
     }
@@ -55,26 +56,28 @@ public class OrderController {
     /**
      * 查询订单，分页查询
      */
-    @RequestMapping(value = "/list.do")
+    // @RequestParam(required = false,defaultValue = "1")Integer pageNum,
+    //@RequestParam(required = false,defaultValue = "10")Integer pageSize
+    @RequestMapping(value = "/list.do/{pageNum}/{pageSize}")
     public ServerResponse list(HttpSession session,
-                               @RequestParam(required = false,defaultValue = "1")Integer pageNum,
-                               @RequestParam(required = false,defaultValue = "10")Integer pageSize){
+                               @PathVariable("pageNum") Integer pageNum,
+                               @PathVariable("pageSize") Integer pageSize){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return orderService.list(userInfo.getId(),pageNum,pageSize);
     }
     /**
      * 获取订单详情
      */
-    @RequestMapping(value = "/detail.do")
-    public ServerResponse detail(HttpSession session,Long orderNo){
+    @RequestMapping(value = "/detail.do/{orderNo}")
+    public ServerResponse detail(HttpSession session,@PathVariable("orderNo") Long orderNo){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return orderService.detail(userInfo.getId(),orderNo);
     }
     /**
      * 支付接口
      */
-    @RequestMapping(value = "/pay.do")
-    public ServerResponse pay(HttpSession session,Long orderNo){
+    @RequestMapping(value = "/pay.do/{orderNo}")
+    public ServerResponse pay(HttpSession session,@PathVariable("orderNo") Long orderNo){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return orderService.pay(userInfo.getId(),orderNo);
@@ -116,8 +119,8 @@ public class OrderController {
     /**
      * 查询支付信息
      */
-    @RequestMapping(value = "/query_order_pay_status.do")
-    public ServerResponse query_order_pay_status(HttpSession session,Long orderNo){
+    @RequestMapping(value = "/query_order_pay_status.do/{orderNo}")
+    public ServerResponse query_order_pay_status(HttpSession session,@PathVariable("orderNo") Long orderNo){
         //验证是否有用户登录
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
         return orderService.query_order_pay_status(orderNo);

@@ -45,9 +45,11 @@ public class CategoryManageInfoController {
     /**
      * 增加节点
      */
-    @RequestMapping(value = "/add_category.do")
-//    @RequestMapping(value = "/add_category.do/parentId/{parentId}/categoryName/{categoryName}")
-    public ServerResponse add_category(HttpSession session, @RequestParam(required = false,defaultValue = "0") Integer parentId, String categoryName){
+//    @RequestMapping(value = "/add_category.do")   @RequestParam(required = false,defaultValue = "0") Integer parentId,
+    @RequestMapping(value = "/add_category.do/parentId/{parentId}/categoryName/{categoryName}")
+    public ServerResponse add_category(HttpSession session,
+                                       @PathVariable("parentId") Integer parentId,
+                                       @PathVariable("categoryName") String categoryName){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
 //        //验证用户是否登录
 //        if(userInfo == null){
@@ -65,8 +67,8 @@ public class CategoryManageInfoController {
      * 修改节点
      * /set_category_name.do/categoryId/{categoryId}/categoryName/{categoryName}
      */
-    @RequestMapping(value = "/set_category_name.do")
-    public ServerResponse set_category_name(HttpSession session,Integer categoryId, String categoryName){
+    @RequestMapping(value = "/set_category_name.do/{categoryId}/{categoryName}")
+    public ServerResponse set_category_name(HttpSession session,@PathVariable("categoryId") Integer categoryId, @PathVariable("categoryName") String categoryName){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
 //        //验证用户是否登录
 //        if(userInfo == null){
@@ -83,8 +85,8 @@ public class CategoryManageInfoController {
     /**
      *获取当前类和他的后台类别
      */
-    @RequestMapping(value = "/get_deep_category.do")
-    public ServerResponse get_deep_category(HttpSession session,Integer categoryId){
+    @RequestMapping(value = "/get_deep_category.do/{categoryId}")
+    public ServerResponse get_deep_category(HttpSession session,@PathVariable("categoryId") Integer categoryId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
 //        //验证用户是否登录
 //        if(userInfo == null){

@@ -27,14 +27,14 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //前端用户
         List<String> portalExclude = new ArrayList<String>();
-        portalExclude.add("/portal/user/login.do");
+        portalExclude.add("/portal/user/login.do/**");
         portalExclude.add("/portal/product/**");
-        portalExclude.add("/portal/user/register.do");
-        portalExclude.add("/portal/user/forget_user_question.do");
-        portalExclude.add("/portal/user/forget_check_question.do");
-        portalExclude.add("/portal/user/forget_checkUser_password.do");
-        portalExclude.add("/portal/user/check_valid.do");
-        portalExclude.add("/manage/user/login.do");
+        portalExclude.add("/portal/user/register.do/**");
+        portalExclude.add("/portal/user/forget_user_question.do/**");
+        portalExclude.add("/portal/user/forget_check_question.do/**");
+        portalExclude.add("/portal/user/forget_checkUser_password.do/**");
+        portalExclude.add("/portal/user/check_valid.do/**");
+        portalExclude.add("/manage/user/login.do/**");
         registry.addInterceptor(loginFilter).addPathPatterns("/**").excludePathPatterns(portalExclude);
         //管理员用户
         registry.addInterceptor(adminLoginInterceptor).addPathPatterns("/manage/**");

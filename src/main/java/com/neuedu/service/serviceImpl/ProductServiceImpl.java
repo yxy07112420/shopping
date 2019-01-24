@@ -301,7 +301,7 @@ public class ProductServiceImpl implements ProductService {
             }
             ServerResponse deep_category = categoryService.get_deep_category(categoryId);
             if(deep_category.isSuccess()){
-                integerSet =(Set<Integer>)deep_category.getDate();
+                integerSet =(Set<Integer>)deep_category.getData();
             }
         }
         //根据keyword搜索商品

@@ -34,7 +34,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                     String token = cookies[i].getValue();
                     ServerResponse serverResponse = userInfoService.selectUserInfoByToken(token);
                     if (serverResponse.isSuccess()) {
-                        UserInfo userInfo = (UserInfo) serverResponse.getDate();
+                        UserInfo userInfo = (UserInfo) serverResponse.getData();
                         HttpSession session = request.getSession();
                         userInfo.setPassword("");
                         session.setAttribute(ResponseCord.CURRENTUSER, userInfo);
