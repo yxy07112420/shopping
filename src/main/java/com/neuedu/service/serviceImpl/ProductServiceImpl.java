@@ -106,6 +106,7 @@ public class ProductServiceImpl implements ProductService {
         if(productId == null || productId.equals("")){
             return ServerResponse.responseIsError("商品编号不能为空");
         }
+
         //根据商品id查询商品信息
         Product product = productMapper.selectByPrimaryKey(productId);
         if(product == null){

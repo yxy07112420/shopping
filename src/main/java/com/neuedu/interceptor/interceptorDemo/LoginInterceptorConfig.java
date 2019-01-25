@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootConfiguration
+//@SpringBootConfiguration
 public class LoginInterceptorConfig implements WebMvcConfigurer {
     @Autowired
     LoginInterceptor loginFilter;

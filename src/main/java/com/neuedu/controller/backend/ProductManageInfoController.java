@@ -60,7 +60,7 @@ public class ProductManageInfoController {
     @RequestMapping(value = "/detail.do/{productId}")
     public ServerResponse detail(HttpSession session,@PathVariable("productId") Integer productId){
         UserInfo userInfo = (UserInfo) session.getAttribute(ResponseCord.CURRENTUSER);
-
+//        int cout = 2/0;
 //        //验证用户是否登录
 //        if(userInfo == null){
 //            return ServerResponse.responseIsError("用户未登录");

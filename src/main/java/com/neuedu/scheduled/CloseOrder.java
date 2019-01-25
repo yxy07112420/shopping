@@ -31,6 +31,5 @@ public class CloseOrder {
         Date closeTime = DateUtils.addSeconds(new Date(),-timeOut);
         //关闭订单
         orderService.closeOrder(DateChangeUtils.dateToString(closeTime));
-        System.out.println("====关闭订单完成===");
     }
 }

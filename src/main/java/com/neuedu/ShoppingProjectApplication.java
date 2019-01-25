@@ -11,13 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(basePackages = {"com.neuedu.*"})
 @EnableScheduling
 public class ShoppingProjectApplication extends SpringBootServletInitializer {
-
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//        return builder.sources(ShoppingProjectApplication.class);
-//    }
-
-
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(ShoppingProjectApplication.class);
@@ -26,7 +19,6 @@ public class ShoppingProjectApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(ShoppingProjectApplication.class, args);
     }
-
 
 }
 

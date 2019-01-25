@@ -126,7 +126,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         //在服务端产生一个token，并将token返回给客户端
         String token = UUID.randomUUID().toString();
-        redisApi.setex(username,300,token);
+        redisApi.setex(username,1800,token);
 //        TokenCache.set(username,token);
         return ServerResponse.responseIsSuccess("",token);
     }

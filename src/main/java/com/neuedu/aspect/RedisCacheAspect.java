@@ -35,6 +35,8 @@ public class RedisCacheAspect {
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint joinPoint){
         Object o = null;
+        //设置key值
+        String key = "product";
         try {
             //key:MD5(全类名+方法名+参数)
             StringBuffer stringBuffer = new StringBuffer();
@@ -44,6 +46,20 @@ public class RedisCacheAspect {
             //获取目标方法的方法名
             String methodName = joinPoint.getSignature().getName();
             stringBuffer.append(methodName);
+            if(methodName.startsWith("update") || methodName.startsWith("set")){
+                System.out.println("更新商品信息");
+                //执行目标方法
+                o = joinPoint.proceed();
+                if(o instanceof ServerResponse){
+                    ServerResponse serverResponse = (ServerResponse)o;
+                    if (serverResponse.isSuccess()){
+                        //数据更新，需要清除缓存
+                        redisApi.del(key);
+                        System.out.println("清除缓存了");
+                    }
+                }
+               return o;
+            }
             //方法中的参数
             Object[] objects = joinPoint.getArgs();
             if(objects != null){
@@ -51,24 +67,25 @@ public class RedisCacheAspect {
                     stringBuffer.append(object);
                 }
             }
-            String key = MD5Utils.getMD5Code(stringBuffer.toString());
-            //根据key值获取缓存
-            String values = redisApi.get(key);
-            if(methodName.startsWith("update") || methodName.startsWith("set")){
-                //数据更新，需要清除缓存
-
-            }
-            if(values != null && !values.equals("")){
+            String filed = MD5Utils.getMD5Code(stringBuffer.toString());
+            //根据filed判断缓存是否存在
+            Boolean values = redisApi.hexists(key,filed);
+            if(values != null && values == true){
                 System.out.println("=================读取到了缓存==================");
-                return jsonObjectMapperApi.str2obj(values, ServerResponse.class);
+                //遍历filed
+                List<String> hmget = redisApi.hmget(key, filed);
+                for (String value:hmget) {
+                    o = jsonObjectMapperApi.str2obj(value, ServerResponse.class);
+                }
+                return o;
             }
             //执行目标方法
             o = joinPoint.proceed();
             System.out.println("====读取数据库=====");
             if(o != null){
                 String jsoncache = jsonObjectMapperApi.obj2String(o);
+                redisApi.hashSet(key,filed,jsoncache);
                 System.out.println("====将数据库的内容写入到缓存=====");
-                redisApi.set(key,jsoncache);
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
